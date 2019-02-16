@@ -72,27 +72,27 @@ namespace OctopusDeploymentManagerPlus.Models
                                 {
                                     if (deployCommands.ProjectForDeploy == null)
                                     {
-                                        Log.Error("Unable to Locate the following Client: " + deployCommands.ProjectName);
+                                        Log.Error(string.Format(ErrorStrings.UnableToLocateProject, deployCommands.ProjectName));
                                     }
                                     if (deployCommands.EnvironmentTypeForDeploy == null)
                                     {
-                                        Log.Error("Unable to Locate the following EnvironmentType: " + deployCommands.EnvironmentType);
+                                        Log.Error(string.Format(ErrorStrings.UnableToLocateEnvironment, deployCommands.EnvironmentType));
                                     }
                                     if (deployCommands.DeploymentTypeForDeploy == null)
                                     {
-                                        Log.Error("Unable to Locate the following DeploymentType: " + deployCommands.DeploymentType);
+                                        Log.Error(string.Format(ErrorStrings.UnableToLocateDeploymentType, deployCommands.DeploymentType));
                                     }
                                     else
                                     {
                                         deploymentRelease = new OctopusResource((IOctopusDeploySettings)deployCommands, deployCommands.Release).GetDeployableRelease();
                                         if (deploymentRelease == null)
                                         {
-                                            Log.Error("Unable to Locate Deployable release for the following Client: " + deployCommands.ProjectName);
+                                            Log.Error(string.Format(ErrorStrings.UnableToLocateRelease, deployCommands.ProjectName));
                                         }
                                     }
                                     if (!string.IsNullOrWhiteSpace(deployCommands.QueueDateTime) && deployCommands.QueuedDateTimeForDeploy == new DateTimeOffset())
                                     {
-                                        Log.Error("Unable to Parse Queued Date Time: " + deployCommands.QueueDateTime);
+                                        Log.Error(string.Format(ErrorStrings.UnableToParseDateTime, deployCommands.QueueDateTime));
                                     }
                                 }
                                 else
@@ -117,13 +117,13 @@ namespace OctopusDeploymentManagerPlus.Models
                                             builtDeployment = DeploymentHelper.BuildDeployment(deployCommands.Repository, deploymentRelease, deploymentEnvironment, deploymentTypeName, null, deployCommands.DeploymentTypeForDeploy.GuidedFailure, skippedSteps, null);
                                         }
                                         var odmTask = new OctopusDeploymentTaskManager(deployCommands.Repository, builtDeployment);
-                                        Log.Info("Deploying [" + deploymentRelease.Version + "]:[" + deployCommands.DeploymentType + "] for [" + deployCommands.ProjectName + "]:[" + deployCommands.EnvironmentType + "]");
+                                        Log.Info(string.Format(MessageStrings.InitiatingDeploy, deploymentRelease.Version, deployCommands.DeploymentType, deployCommands.ProjectName, deployCommands.EnvironmentType ));
                                         odmTask.StartDeploy();
                                         if (odmTask.Status == TaskManagerStatus.Queued)
                                         {
-                                            Log.Warn("The deployment is currently queued behind " + odmTask.GetQueuedDeploymentCount().ToString() + " other tasks");
+                                            Log.Warn(string.Format(MessageStrings.QueuedBehindDeployments, odmTask.GetQueuedDeploymentCount().ToString()));
                                         }
-                                        Log.Info("DeplpymentLink: " + odmTask.GetDeploymentLink());
+                                        Log.Info(string.Format(MessageStrings.DeploymentLink, odmTask.GetDeploymentLink()));
                                     }
                                     catch (Exception ex)
                                     {
@@ -133,14 +133,14 @@ namespace OctopusDeploymentManagerPlus.Models
                             }
                             else
                             {
-                                Log.Error("The supplied Api Key is invalid.");
+                                Log.Error(ErrorStrings.InvalidApiKey);
                             }
                         }
                         break;
                     case VerbCommandType.EncryptKey:
                         var encryptKeyCommands = (EncryptKeyCommands)invokedVerbInstance;
                         var encryptedKey = KeyGenerator.KeyGeneration(encryptKeyCommands.AdminApiKey, encryptKeyCommands.KeyOutputDirectory);
-                        Log.Info("==============Encrypted Key==============" + Environment.NewLine + encryptedKey + Environment.NewLine + "=========================================");
+                        Log.Info(string.Format(MessageStrings.EncryptedApiKey, encryptedKey));
                         break;
                 }
             }
@@ -157,7 +157,7 @@ namespace OctopusDeploymentManagerPlus.Models
             {
                 if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ResourceStrings.KeyFileName)))
                 {
-                    throw new Exception("Missing KeyFile in executable directory");
+                    throw new Exception(ErrorStrings.MissingKeyFile);
                 }
                 var configFileErrors = ConfigurationValidation.GeneralConfigValidation(RunTypes.Gui);
                 if(configFileErrors.Count > 0)
@@ -168,7 +168,7 @@ namespace OctopusDeploymentManagerPlus.Models
                 SuccesfullAdminLogin = AdminConnection.ValidateAdminConnection();
                 if (!SuccesfullAdminLogin)
                 {
-                    throw new Exception("Incorrect AdminApiKey supplied.");
+                    throw new Exception(ErrorStrings.InvalidAdminApiKey);
                 }
                 var userName = ConfigurationManager.AppSettings[ResourceStrings.UserNameAppSettingKey];
            
@@ -182,7 +182,7 @@ namespace OctopusDeploymentManagerPlus.Models
 
                     if (userNamePrompt.ShowDialog() == DialogResult.Cancel)
                     {
-                        throw new Exception("Invalid UserName or No UserName Entered");
+                        throw new Exception(ErrorStrings.InvaidUserName);
                     }
                     else
                     {

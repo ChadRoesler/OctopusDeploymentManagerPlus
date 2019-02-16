@@ -1,4 +1,6 @@
-﻿namespace OctopusDeploymentManagerPlus.Constants
+﻿using System;
+
+namespace OctopusDeploymentManagerPlus.Constants
 {
     internal class MessageStrings
     {
@@ -26,5 +28,12 @@
         internal const string CancellationPendingTitleClose = "Cancellation Pending";
         internal const string ActiveDeploymentMessageClose = "The current deployment has not completed.\r\nThe deployment will not be canceled and can still be managed and viewed on the server.\r\n\r\nAre you sure you want to exit Octopus Deployment Manager?";
         internal const string ActiveDeploymentTitleClose = "Active Deployment";
+        internal const string EncryptedApiKey = @"==============Encrypted Key==============
+{0}
+=========================================";
+        internal const string InitiatingDeploy = "Deploying [{0}]:[{1}] for [{2}]:[{3}]";
+        internal const string QueuedBehindDeployments = "The deployment is currently queued behind {0} other tasks";
+        internal const string DeploymentLink = "DeplpymentLink: {0}";
+
     }
 }

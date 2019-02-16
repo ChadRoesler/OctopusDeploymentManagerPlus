@@ -16,5 +16,14 @@
         internal const string RequiredStepsProjectNotFound = "Required Steps Project: {0} was not found.";
         internal const string DeploymentTypeLifeCycleNotFound = "Deployment Type Life Cycle: {0} was not found.";
         internal const string DeploymentTypeReleaseVersionNotFound = "Deployment Type Release Version: {0} was not found in the projects listed in DeploymentTypeProjectGroup.";
+        internal const string UnableToLocateProject = "Unable to Locate the following Client: {0}";
+        internal const string UnableToLocateEnvironment = "Unable to Locate the following EnvironmentType: {0}";
+        internal const string UnableToLocateDeploymentType = "Unable to Locate the following DeploymentType: {0}";
+        internal const string UnableToLocateRelease = "Unable to Locate Deployable release for the following Client: {0}";
+        internal const string UnableToParseDateTime = "Unable to Parse Queued Date Time: {0}";
+        internal const string InvalidApiKey = "The supplied Api Key is invalid.";
+        internal const string MissingKeyFile = "Missing KeyFile in executable directory";
+        internal const string InvalidAdminApiKey = "Incorrect AdminApiKey supplied.";
+        internal const string InvaidUserName = "Invalid UserName or No UserName Entered";
     }
 }
