@@ -35,33 +35,33 @@ namespace OctopusDeploymentManagerPlus.Models
 
         public override void ConsoleMain(string[] arguments, RunTypes runType)
         {
-            var configFileErrors = ConfigurationValidation.GeneralConfigValidation(runType);
-            if (configFileErrors.Count > 0)
+            
+            var verbCommand = new VerbCommands();
+            string invokedVerb = string.Empty; ;
+            object invokedVerbInstance = new object();
+
+            if (!Parser.Default.ParseArguments(arguments, verbCommand, (verb, subObtions) =>
             {
-                Log.Error(string.Join(Environment.NewLine, configFileErrors));
+                invokedVerb = verb;
+                invokedVerbInstance = subObtions;
+            }))
+            {
+                Environment.Exit(Parser.DefaultExitCodeFail);
             }
             else
             {
-
-                var verbCommand = new VerbCommands();
-                string invokedVerb = string.Empty; ;
-                object invokedVerbInstance = new object();
-
-                if (!Parser.Default.ParseArguments(arguments, verbCommand, (verb, subObtions) =>
+                VerbCommandType parsedVerb;
+                Enum.TryParse(invokedVerb, true, out parsedVerb);
+                switch (parsedVerb)
                 {
-                    invokedVerb = verb;
-                    invokedVerbInstance = subObtions;
-                }))
-                {
-                    Environment.Exit(Parser.DefaultExitCodeFail);
-                }
-                else
-                {
-                    VerbCommandType parsedVerb;
-                    Enum.TryParse(invokedVerb, true, out parsedVerb);
-                    switch (parsedVerb)
-                    {
-                        case VerbCommandType.Deploy:
+                    case VerbCommandType.Deploy:
+                        var configFileErrors = ConfigurationValidation.GeneralConfigValidation(runType);
+                        if (configFileErrors.Count > 0)
+                        {
+                            Log.Error(string.Join(Environment.NewLine, configFileErrors));
+                        }
+                        else
+                        {
                             var deployCommands = (DeployCommands)invokedVerbInstance;
                             deployCommands.ProcessDeploymentArguments();
                             if (new OctopusConnection().Validate(deployCommands.Repository))
@@ -135,13 +135,13 @@ namespace OctopusDeploymentManagerPlus.Models
                             {
                                 Log.Error("The supplied Api Key is invalid.");
                             }
-                            break;
-                        case VerbCommandType.EncryptKey:
-                            var encryptKeyCommands = (EncryptKeyCommands)invokedVerbInstance;
-                            var here = KeyGenerator.KeyGeneration(encryptKeyCommands.AdminApiKey, encryptKeyCommands.KeyOutputDirectory);
-                            Log.Info("output to " + here);
-                            break;
-                    }
+                        }
+                        break;
+                    case VerbCommandType.EncryptKey:
+                        var encryptKeyCommands = (EncryptKeyCommands)invokedVerbInstance;
+                        var encryptedKey = KeyGenerator.KeyGeneration(encryptKeyCommands.AdminApiKey, encryptKeyCommands.KeyOutputDirectory);
+                        Log.Info("==============Encrypted Key==============" + Environment.NewLine + encryptedKey + Environment.NewLine + "=========================================");
+                        break;
                 }
             }
             base.ConsoleMain(arguments, runType);
