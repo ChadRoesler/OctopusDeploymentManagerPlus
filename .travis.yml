@@ -1,2 +1,2 @@
 language: csharp
-solution: OctopusDeploymentManagerPlus.sln
+solution: OctopusDeploymentManagerPlus\OctopusDeploymentManagerPlus.sln
