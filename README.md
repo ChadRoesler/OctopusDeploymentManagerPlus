@@ -1,5 +1,5 @@
 # OctopusDeploymentManagerPlus
-
+[![Build Status](https://ci.appveyor.com/api/projects/status/ChadRoesler/octopusdeploymentmanagerplus?retina=true)](https://ci.appveyor.com/api/projects/status/ChadRoesler/octopusdeploymentmanagerplus?retina=true)
 
 Brief Overview:
 
