@@ -30,7 +30,7 @@ namespace OctopusDeploymentManagerPlus.Models.CommandLine
         [Option('a', "apiKey", HelpText = CommandStrings.ApiKeyHelp, Required = true)]
         public string ApiKey { get; set; }
 
-        [Option('q', "QueueDateTime", HelpText = CommandStrings.QueueDateTimeHelp, Required = false)]
+        [Option('q', "queueDateTime", HelpText = CommandStrings.QueueDateTimeHelp, Required = false)]
         public string QueueDateTime
         {
             get

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 using OctopusDeploymentManagerPlus.Constants;
 using OctopusDeploymentManagerPlus.Models.Interfaces;
@@ -17,6 +12,9 @@ namespace OctopusDeploymentManagerPlus.Models.CommandLine
 
         [Option('k', "keyOutputDirectory", HelpText = CommandStrings.KeyOutputDirectoryHelp, Required = true)]
         public string KeyOutputDirectory { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
 
         [HelpVerbOption("help", HelpText = CommandStrings.HelpText)]
         public string GetUsage()
