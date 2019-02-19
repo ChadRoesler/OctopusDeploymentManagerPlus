@@ -224,8 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Images\OctopusDeploymentManagerPlus.ico" />
-    <None Include="Resources\package.bmp" />
-    <None Include="Resources\Images\OctopusDeploymentManagerPlusPackage.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\errorProvider.Icon.ico" />

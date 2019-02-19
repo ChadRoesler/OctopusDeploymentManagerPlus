@@ -119,10 +119,7 @@ namespace OctopusDeploymentManagerPlus.Workers
                     break;
                 case ReleaseType.Targeted:
                     var releaseSemanticVersionObject = new SemanticVersion("0.0.0.0");
-                    if (SemanticVersion.TryParse(releaseVersion, out releaseSemanticVersionObject))
-                    {
-                        releaseList.Add(ReleaseHelper.GetProjectReleaseByVersion(sessionOctopusSettings.Repository, clientProject, releaseSemanticVersionObject));
-                    }
+                    releaseList.AddRange(ReleaseHelper.GetProjectReleases(sessionOctopusSettings.Repository, clientProject));
                     break;
                 case ReleaseType.LatestRelease:
                     releaseList.Add(ReleaseHelper.GetLatestReleaseSemanticVersionFromProject(sessionOctopusSettings.Repository, clientProject));
